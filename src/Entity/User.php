@@ -37,6 +37,8 @@ class User
     private $id;
 
     /**
+     * user's first name
+     *
      * @ORM\Column(type="string", length=100)
      *  @Assert\NotNull(
      *     message= "Vous devez renseigner un prénom"
@@ -58,6 +60,8 @@ class User
     private $firstname;
 
     /**
+     * user's last name
+     *
      * @ORM\Column(type="string", length=100)
      *  @Assert\NotNull(
      *     message= "Vous devez renseigner un nom"
@@ -79,6 +83,8 @@ class User
     private $lastname;
 
     /**
+     * user's e-mail
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull(
      *     message= "Vous devez renseigner une adresse email"
@@ -98,12 +104,16 @@ class User
     private $email;
 
     /**
+     * customer who added the user
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="Users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
 
     /**
+     * creation date of the user
+     *
      * @ORM\Column(type="date")
      */
     private $createdAt;
