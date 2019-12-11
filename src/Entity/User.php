@@ -17,7 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     message="cet email est déjà utilisé"
  * )
  * @ORM\HasLifecycleCallbacks()
- * @ApiResource( itemOperations={"get", "delete"},
+ * @ApiResource( itemOperations={"get"={"security"="is_granted('ROLE_USER') and object.getCustomer() == user", "security_message"="Sorry, but you are not related to this user."},
+ *                               "delete"={"security"="is_granted('ROLE_USER') and object.getCustomer() == user", "security_message"="Sorry, but you are not related to this user."} },
  *               collectionOperations={"get"={ "openapi_context" = {"summary" = "Retrieves the collection of User resources related to to the current connected Customer."} },
  *                                     "post"={"denormalization_context"={"groups"={"post"}} } },
  *               normalizationContext={"groups"={"get"}}
