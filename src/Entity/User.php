@@ -37,10 +37,10 @@ class User
      * user's first name
      *
      * @ORM\Column(type="string", length=100)
-     *  @Assert\NotNull(
+     * @Assert\NotNull(
      *     message= "Vous devez renseigner un prénom"
      *  )
-     *  @Assert\NotBlank(
+     * @Assert\NotBlank(
      *     message= "Vous devez renseigner un prénom"
      *  )
      * @Assert\Length(
@@ -61,10 +61,10 @@ class User
      * user's last name
      *
      * @ORM\Column(type="string", length=100)
-     *  @Assert\NotNull(
+     * @Assert\NotNull(
      *     message= "Vous devez renseigner un nom"
      *  )
-     *  @Assert\NotBlank(
+     * @Assert\NotBlank(
      *     message= "Vous devez renseigner un nom"
      *  )
      * @Assert\Length(
