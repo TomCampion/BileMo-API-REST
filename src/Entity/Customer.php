@@ -13,8 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={"get"},
+ *     itemOperations={},
+ *     collectionOperations={},
  *     normalizationContext={"groups"={"default"}},
  * )
  */
