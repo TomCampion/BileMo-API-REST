@@ -50,7 +50,7 @@ class User
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="First name name cannot contain a number"
+     *     message="Le prénom ne peut pas contenir de nombre."
      * )
      * @Groups("post")
      * @Groups("get")
@@ -74,7 +74,7 @@ class User
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="Last name cannot contain a number"
+     *     message="Le nom ne peut pas contenir de nombre."
      * )
      * @Groups("post")
      * @Groups("get")
