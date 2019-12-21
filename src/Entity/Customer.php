@@ -2,14 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={"get"},
+ *     normalizationContext={"groups"={"default"}},
+ * )
  */
 class Customer implements UserInterface
 {
@@ -17,11 +24,13 @@ class Customer implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("default")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("default")
      */
     private $name;
 
@@ -38,17 +47,19 @@ class Customer implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="customer", orphanRemoval=true)
+     * @Groups("users")
      */
-    private $Users;
+    private $users;
 
     /**
      * @ORM\Column(type="date")
+     *
      */
-    private $added_at;
+    private $addedAt;
 
     public function __construct()
     {
-        $this->Users = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,13 +145,13 @@ class Customer implements UserInterface
      */
     public function getUsers(): Collection
     {
-        return $this->Users;
+        return $this->users;
     }
 
     public function addUser(User $user): self
     {
-        if (!$this->Users->contains($user)) {
-            $this->Users[] = $user;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
             $user->setCustomer($this);
         }
 
@@ -149,8 +160,8 @@ class Customer implements UserInterface
 
     public function removeUser(User $user): self
     {
-        if ($this->Users->contains($user)) {
-            $this->Users->removeElement($user);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
             if ($user->getCustomer() === $this) {
                 $user->setCustomer(null);
@@ -160,14 +171,17 @@ class Customer implements UserInterface
         return $this;
     }
 
+    /**
+     * @Groups("default")
+     */
     public function getAddedAt(): ?\DateTimeInterface
     {
-        return $this->added_at;
+        return $this->addedAt;
     }
 
     public function setAddedAt(\DateTimeInterface $added_at): self
     {
-        $this->added_at = $added_at;
+        $this->addedAt = $added_at;
 
         return $this;
     }

@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ApiResource(itemOperations={"get"},
+ *              collectionOperations={"get"})
  */
 class Product
 {
@@ -46,7 +49,7 @@ class Product
     /**
      * @ORM\Column(type="date")
      */
-    private $release_date;
+    private $releaseDate;
 
     public function getId(): ?int
     {
@@ -115,12 +118,12 @@ class Product
 
     public function getReleaseDate(): ?\DateTimeInterface
     {
-        return $this->release_date;
+        return $this->releaseDate;
     }
 
     public function setReleaseDate(\DateTimeInterface $release_date): self
     {
-        $this->release_date = $release_date;
+        $this->releaseDate = $release_date;
 
         return $this;
     }

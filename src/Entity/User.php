@@ -2,17 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\EntityListeners({"App\Doctrine\UserSetCustomerListener"})
  * @UniqueEntity(
  *     "email",
  *     message="cet email est déjà utilisé"
  * )
  * @ORM\HasLifecycleCallbacks()
+ * @ApiResource( collectionOperations={"get"= {
+ *                                              "openapi_context" = {"summary" = "Retrieves the collection of User resources related to to the current connected Customer."}
+ *                                            },
+ *                                     "post"={"denormalization_context"={"groups"={"post"}} }
+ *                                    },
+ *               itemOperations={"get","delete"}
+ * )
  */
 class User
 {
@@ -35,6 +48,12 @@ class User
      *      max = 100,
      *      maxMessage = "Le prénom ne peut pas excéder {{ limit }} caractères",
      * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="First name name cannot contain a number"
+     * )
+     * @Groups("post")
      */
     private $firstname;
 
@@ -50,6 +69,12 @@ class User
      *      max = 100,
      *      maxMessage = "Le nom ne peut pas excéder {{ limit }} caractères",
      * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Last name cannot contain a number"
+     * )
+     * @Groups("post")
      */
     private $lastname;
 
@@ -68,6 +93,7 @@ class User
      * @Assert\Email(
      *     message = "L'email {{ value }} n'est pas valide.",
      * )
+     * @Groups("post")
      */
     private $email;
 
@@ -80,7 +106,7 @@ class User
     /**
      * @ORM\Column(type="date")
      */
-    private $created_at;
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -137,21 +163,15 @@ class User
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
 
     /**
      * @ORM\PrePersist
      */
     public function setCreationDate()
     {
-        $this->setCreatedAt(new \Datetime());
+        $this->createdAt = new \DateTime();
     }
 }
