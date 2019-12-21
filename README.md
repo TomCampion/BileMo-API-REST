@@ -1,11 +1,10 @@
-#BileMo
+<h1>BileMo</h1>
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c003b01ff82497d885ae587db38103f)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TomCampion/BileMo-API-REST&amp;utm_campaign=Badge_Grade)
 
 BileMo offers an API that allows you to:
 <ul>
-<li>
-consult the list of Customer;
-<li>
-consult the details of a Customer;
+
 <li>
 consult the list of BileMo products;
 <li>
@@ -52,12 +51,6 @@ $ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
 Once the project is installed, you can find detailed documentation here : **/api?ui=re_doc**
 
 Otherwise, here is a brief documentation :
-#### Customer
-- **GET**  /api/customers
-<br>Retrieves the collection of Customer resources.
-
-- **GET** /api/customers/{id}
-<br>Retrieves a Customer resource.
 
 #### Product
 - **GET** /api/products

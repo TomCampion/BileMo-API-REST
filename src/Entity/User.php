@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 
 /**
@@ -19,12 +17,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     message="cet email est déjà utilisé"
  * )
  * @ORM\HasLifecycleCallbacks()
- * @ApiResource( collectionOperations={"get"= {
- *                                              "openapi_context" = {"summary" = "Retrieves the collection of User resources related to to the current connected Customer."}
- *                                            },
- *                                     "post"={"denormalization_context"={"groups"={"post"}} }
- *                                    },
- *               itemOperations={"get","delete"}
+ * @ApiResource( itemOperations={"get"={"security"="is_granted('ROLE_USER') and object.getCustomer() == user", "security_message"="Sorry, but you are not related to this user."},
+ *                               "delete"={"security"="is_granted('ROLE_USER') and object.getCustomer() == user", "security_message"="Sorry, but you are not related to this user."} },
+ *               collectionOperations={"get"={ "openapi_context" = {"summary" = "Retrieves the collection of User resources related to to the current connected Customer."} },
+ *                                     "post"={"denormalization_context"={"groups"={"post"}} } },
+ *               normalizationContext={"groups"={"get"}}
  * )
  */
 class User
@@ -40,10 +37,10 @@ class User
      * user's first name
      *
      * @ORM\Column(type="string", length=100)
-     *  @Assert\NotNull(
+     * @Assert\NotNull(
      *     message= "Vous devez renseigner un prénom"
      *  )
-     *  @Assert\NotBlank(
+     * @Assert\NotBlank(
      *     message= "Vous devez renseigner un prénom"
      *  )
      * @Assert\Length(
@@ -53,9 +50,10 @@ class User
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="First name name cannot contain a number"
+     *     message="Le prénom ne peut pas contenir de nombre."
      * )
      * @Groups("post")
+     * @Groups("get")
      */
     private $firstname;
 
@@ -63,10 +61,10 @@ class User
      * user's last name
      *
      * @ORM\Column(type="string", length=100)
-     *  @Assert\NotNull(
+     * @Assert\NotNull(
      *     message= "Vous devez renseigner un nom"
      *  )
-     *  @Assert\NotBlank(
+     * @Assert\NotBlank(
      *     message= "Vous devez renseigner un nom"
      *  )
      * @Assert\Length(
@@ -76,9 +74,10 @@ class User
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=false,
-     *     message="Last name cannot contain a number"
+     *     message="Le nom ne peut pas contenir de nombre."
      * )
      * @Groups("post")
+     * @Groups("get")
      */
     private $lastname;
 
@@ -100,6 +99,7 @@ class User
      *     message = "L'email {{ value }} n'est pas valide.",
      * )
      * @Groups("post")
+     * @Groups("get")
      */
     private $email;
 
@@ -115,6 +115,7 @@ class User
      * creation date of the user
      *
      * @ORM\Column(type="date")
+     * @Groups("get")
      */
     private $createdAt;
 
