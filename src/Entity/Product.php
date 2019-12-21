@@ -22,31 +22,43 @@ class Product
     private $id;
 
     /**
+     * product name
+     *
      * @ORM\Column(type="string", length=50)
      */
     private $name;
 
     /**
+     * product weight, in grams
+     *
      * @ORM\Column(type="integer")
      */
     private $weight;
 
     /**
+     * storage capacity, in gigabyte
+     *
      * @ORM\Column(type="integer")
      */
     private $storage;
 
     /**
+     * short product description
+     *
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * product price, integer
+     *
      * @ORM\Column(type="integer")
      */
     private $price;
 
     /**
+     * release date of the product
+     *
      * @ORM\Column(type="date")
      */
     private $releaseDate;

@@ -29,6 +29,8 @@ class Customer implements UserInterface
     private $id;
 
     /**
+     * customer's brand name
+     *
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups("default")
      */
@@ -52,8 +54,9 @@ class Customer implements UserInterface
     private $users;
 
     /**
-     * @ORM\Column(type="date")
+     * date the client was added to the API
      *
+     * @ORM\Column(type="date")
      */
     private $addedAt;
 
